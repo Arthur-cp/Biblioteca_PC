@@ -1,0 +1,70 @@
+{% extends "gerenciamento/base.html" %}
+
+{% block style %}
+    .product-title,  .product-description, .price, .vote, .sizes {
+    margin-bottom: 15px; }
+{% endblock %}
+{% block content %}
+    <div class="container bg bg-white">
+
+    <div class="container-fliud">
+    <div class="wrapper row">
+    <div class="preview col-6">
+
+        <div class="preview-pic tab-content">
+            <div class="tab-pane active  my-auto mx-auto" id="pic-1"><img
+                    src="{{ book.pic.url }}" height="350" width="350"/>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="details col-6">
+        <h1>Título: {{ book.title }}</h1>
+        <p><strong>Autor: </strong>{{ book.author }}</p>
+        <p><strong>Descrição: </strong> {{ book.description }}</p>
+        <p><strong>Gênero: </strong>{{ book.genre }}</p>
+        <p><strong>Copias disponíveis: </strong>{{ book.quantity }}</p>
+        <div style="margin-left:20px;margin-top:20px">
+            
+            {% if user.is_superuser %}
+                <h4>Gerenciar:</h4>
+                <a class="btn btn-success" href="{% url 'atualizar_livro' pk=book.id %}">Atualizar livro</a>
+                <a class="btn btn-danger" href="{% url 'excluir_livro' pk=book.id %}">Excluir livro</a>
+                <a class="btn btn-primary" href="{% url 'emprestimo' pk=book.id %}">Empréstimo</a>
+            {% endif %}
+
+            {% if not user.is_superuser and book.quantity >= 1 %}
+                <a class="btn btn-primary" href="{% url 'emprestimo' pk=book.id %}">Iniciar empréstimo</a>
+            {% endif %}
+
+
+            {% if book.available_copies %}
+                <br>
+                no of avialable copies={{ book.available_copies }}<br>
+                <a class="btn btn-primary" href="{% url 'emprestimo' pk=book.id %}">Issue</a>
+            {% endif %}      </div>
+
+    </div>
+
+    
+{% endblock %}
+
+{% block javascript %}
+    var i=0;
+    var a;
+    {% for r in reviews %}
+        a=document.getElementById("{{ r.id }}");
+        i=0;
+        if (parseFloat({{ r.rating }})>parseInt({{ r.rating }}))
+        {
+        a.innerHTML =  a.innerHTML+ "<span class='float-right'><i class='text-warning fa fa-star-half-o'></i></span>";
+        }
+
+        for (i = 0; i < parseInt({{ r.rating }}); i++) {
+        a.innerHTML =  a.innerHTML+"<span class='float-right'><i class='text-warning fa fa-star'></i></span>";
+        }
+
+
+    {% endfor %}
+{% endblock %}
