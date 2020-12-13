@@ -1,5 +1,5 @@
 # C:\Users\Arthur-PC\Biblioteca_PC> venv\Scripts\activate.bat
-# C:\Users\Arthur-PC\Biblioteca_PC\biblioteca_project>python manage.py runserver
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os

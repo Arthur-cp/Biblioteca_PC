@@ -23,10 +23,15 @@ urlpatterns = [
     path('book/<int:pk>/delete/', gerenciamento_views.BookDelete, name='excluir_livro'),
     path('book/<int:pk>/borrow/', gerenciamento_views.user_request_issue, name='emprestimo'),
     path('book/<int:pk>', gerenciamento_views.BookDetailView, name='detalhes_livro'),
-    path('book/<int:pk>/update', gerenciamento_views.BookUpdate, name='atualizar_livro'),
+    path('book/<int:pk>/update/', gerenciamento_views.BookUpdate, name='atualizar_livro'),
+
+    path('borrowerlist/', gerenciamento_views.BorrowerListView, name='lista_emprestimos' ),
+    path('borrower/<int:pk>', gerenciamento_views.BorrowerDetailView, name='detalhes_emprestimos'),
+    path('borrower/<int:pk>/return/', gerenciamento_views.return_book, name='retorno_emprestimo'),
 
 
-url(r'^search_b/', gerenciamento_views.search_book, name="search_b")
+url(r'^search_b/', gerenciamento_views.search_book, name="search_b"),
+url(r'^search_e/', gerenciamento_views.search_emprestimo, name="search_e")
 ]
 
 if settings.DEBUG:

@@ -13,32 +13,31 @@
 
         <div class="preview-pic tab-content">
             <div class="tab-pane active  my-auto mx-auto" id="pic-1"><img
-                    src="{{ book.pic.url }}" height="350" width="350"/>
+                    src="{{ borrower.usuario.profile.image.url }}" height="200" width="200"/>
+            </div>
+        </div>
+
+        <div class="preview-pic tab-content">
+            <div class="tab-pane active  my-auto mx-auto" id="pic-1"><img
+                    src="{{ borrower.livro.pic.url }}" height="200" width="200"/>
             </div>
         </div>
 
 
     </div>
     <div class="details col-6">
-        <h1>Título: {{ book.title }}</h1>
-        <p><strong>Autor: </strong>{{ book.author }}</p>
-        <p><strong>Descrição: </strong> {{ book.description }}</p>
-        <p><strong>Gênero: </strong>{{ book.genre }}</p>
-        <p><strong>Copias disponíveis: </strong>{{ book.quantity }}</p>
+        <h1>Usuário: {{ borrower.usuario }}</h1>
+        <p><strong>Livro: </strong>{{ borrower.livro }}</p>
+        <p><strong>Data de empréstimo: </strong> {{ borrower.data_emprestimo }}</p>
+        <p><strong>Prazo de devolução: </strong>{{ borrower.data_retorno }}</p>
         <div style="margin-left:20px;margin-top:20px">
             
             {% if user.is_superuser %}
                 <h4>Gerenciar:</h4>
-                <a class="btn btn-success" href="{% url 'atualizar_livro' pk=book.id %}">Atualizar livro</a>
-                <a class="btn btn-danger" href="{% url 'excluir_livro' pk=book.id %}">Excluir livro</a>
-                <a class="btn btn-primary" href="{% url 'emprestimo' pk=book.id %}">Iniciar empréstimo</a>
+                <a class="btn btn-primary" href="{% url 'retorno_emprestimo' pk=borrower.id %}">Concluir retorno</a>
             {% endif %}
 
-            {% if not user.is_superuser and book.quantity >= 1 %}
-                <a class="btn btn-primary" href="{% url 'emprestimo' pk=book.id %}">Iniciar empréstimo</a>
-            {% endif %}
-
-
+            
             {% if book.available_copies %}
                 <br>
                 no of avialable copies={{ book.available_copies }}<br>

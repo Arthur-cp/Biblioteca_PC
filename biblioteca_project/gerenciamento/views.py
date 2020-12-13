@@ -18,6 +18,15 @@ def BookListView(request):
     book_list = Book.objects.all()
     return render(request, 'catalogo/book_list.html', locals())
 
+#Lista de todos os empréstimos
+@login_required
+def BorrowerListView(request):
+	if not request.user.is_superuser:
+		messages.warning(request, f'É necessário logar como administrador para fazer isso.')
+		return redirect('gerenciamento-home')
+	borrower_list = Borrower.objects.all()
+	return render(request, 'catalogo/borrower_list.html', locals())
+
 
 @login_required
 def BookCreate(request):
@@ -46,6 +55,17 @@ def BookDetailView(request, pk):
 		return render(request, 'catalogo/book_detail.html', locals())
 
 
+def BorrowerDetailView(request, pk):
+	borrower = get_object_or_404(Borrower, id=pk)
+
+	try:
+		stu = User.objects.get(roll_no=request.user)
+		
+	except:
+		pass
+		return render(request, 'catalogo/borrower_detail.html', locals())
+
+
 
 @login_required
 def user_request_issue(request, pk):
@@ -62,6 +82,7 @@ def user_request_issue(request, pk):
 		obj.quantity = obj.quantity - 1
 		obj.save()
 		a.save()
+		messages.success(request, f'Sucesso!')
 	else:
 		message = "Não existem cópias disoníveis atualmente"
 
@@ -107,6 +128,7 @@ def return_book(request, pk):
     book.quantity = book.quantity + 1
     book.save()
     obj.delete()
+    messages.success(request, f'Retorno concluído com sucesso!')
     return redirect('gerenciamento-home')
 
 
@@ -151,4 +173,18 @@ def search_book(request):
         book_list= Book.objects.filter(entry_query)
 
     return render(request,'catalogo/book_list.html',locals())
+
+
+
+def search_emprestimo(request):
+    query_string = ''
+    found_entries = None
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+
+        entry_query = get_query(query_string, ['usuario', 'livro'])
+
+        borrower_list = Borrower.objects.filter(entry_query)
+
+    return render(request,'catalogo/borrower_list.html',locals())
 

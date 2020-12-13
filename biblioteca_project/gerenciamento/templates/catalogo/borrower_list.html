@@ -1,0 +1,35 @@
+{% extends "gerenciamento/base.html" %}
+
+{% block content %}
+   <!-- <center> <form class="form" id="searchform" action="{% url 'search_e' %}" method="get">
+    <div class="form-group">
+    <input type="text" class="col-5  form-control-lg"  placeholder="Procure pelo usuário ou livro..." name="q" type="text"/>
+    <button type="button"  class="btn btn-outline-info" onclick="searchform.submit()">Procurar</button>
+        </div>
+</form> --> <!-- Bug a ser resolvido / Pesquisa na lista de empréstimos-->
+   </center>
+    <h1>Lista de empréstimos:</h1>
+
+    {% if borrower_list %}
+
+    <div class="row mx-auto">
+      {% for borrower in borrower_list %}
+
+
+    <div class="mx-3 col-md-4 col-lg-3 mb-4 shadow p-2 mb-4 bg-white rounded">
+      <div class="card mx-auto text-center ">
+      <img class="card-img-top" src="{{ borrower.usuario.profile.image.url }}" alt="Username" height="200px" width="200px">
+      <img class="card-img-top" src="{{ borrower.livro.pic.url }}" alt="Sample Title" height="200px" width="200px">
+        <div class="card-body">
+          <h2 class="card-title">    <a href="{% url 'detalhes_emprestimos' pk=borrower.id %}">{{ borrower.usuario }}</a> ({{borrower.livro}})</h2>
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+    </div>
+
+
+    {% else %}
+      <p class=" bg bg-white">Não existem empréstimos cadastrados atualmente.</p>
+    {% endif %}       
+{% endblock %}
